@@ -12,8 +12,7 @@
    ```bash
    cd teste-pratico-invisual
    ```
-3. Crie um ambiente virtual 
-
+3. Crie um ambiente virtual
    (Windows)
 
    ```bash
@@ -32,6 +31,12 @@
       ```bash
       ./venv/Scripts/activate
       ```
+
+(Linux)
+
+```bash
+source venv/bin/activate
+```
 
 Crie um ambiente virtual
 (Windows)
