@@ -14,7 +14,7 @@
    ```
 3. Crie um ambiente virtual
    (Windows)
-
+   
    ```bash
    python -m venv venv
    ```
@@ -24,32 +24,22 @@
    ```bash
    python3 -m venv venv
    ```
-
-   4. Ative o ambiente virtual
+4. Ative o ambiente virtual
       (Windows)
 
       ```bash
       ./venv/Scripts/activate
       ```
-
-(Linux)
-
+      (Linux)
+      ```bash
+      source venv/bin/activate
+      ```
+5. Instale as dependências
+   ```bash
+   pip install -r requeriments.txt
+   npm install
+   ```
+##Rodando o Projeto
 ```bash
-source venv/bin/activate
+   npm start
 ```
-
-Crie um ambiente virtual
-(Windows)
-python -m venv venv
-(Linux)
-python3 -m venv venv
-
-ative o ambiente virtual
-(Windows)
-./venv/Scripts/activate
-(Linux)
-source venv/bin/activate
-
-Instale as dependências
-pip install -r requeriments.txt
-(-r) flag para que o pip saiba que ele deve ler de um arquivo (no caso, o requirements.txt) e instalar as bibliotecas listadas nele.
