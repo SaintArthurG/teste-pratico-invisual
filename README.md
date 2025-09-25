@@ -1,5 +1,9 @@
 # Os 250 melhores filmes de acordo com o IMBD
 
+## Pré-requisitos
+googledriver = https://developer.chrome.com/docs/chromedriver/downloads?hl=pt-br
+instale a versão compativel com seu navegador chrome
+
 ## Instalação
 
 1. Clone o repositório
