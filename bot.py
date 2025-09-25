@@ -8,10 +8,15 @@ import time
 import json
 import re
 import requests
+import shutil
+import os
 
 urlNode = "http://localhost:3000/filmes"
 
 chrome_driver = "./chromedriver"
+
+
+shutil.move('filmes.json', './')
 
 options = Options()
 options.add_argument("--log-level=3")
@@ -85,15 +90,14 @@ for filme in dados_filmes:
         json.dump(dados_filmes, f, ensure_ascii=False, indent=2)
 
     response = requests.post(urlNode, json=dados_filmes)
-    
-
-print("Escrevendo dados no arquivo JSON...")
-#with open('filmes.json', 'w', encoding='utf-8') as f:
-    #json.dump(dados_filmes, f, ensure_ascii=False, indent=2)
 
 driver.quit()
 
+origem = 'filmes.xlsx'
 
-filmesData = {"filmes": dados_filmes}
+destino = 'arquivos'
 
-print(response.text)
+os.makedirs(os.path.dirname(destino), exist_ok=True)
+
+shutil.move(origem, destino)
+
