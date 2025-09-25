@@ -42,6 +42,7 @@ Este projeto permite que você consulte os 250 melhores filmes classificados no 
       source venv/bin/activate
       ```
 5. Instale as dependências
+   Dependências python estão listadas no requeriments.txt
    ```bash
    pip install -r requeriments.txt
    npm install
