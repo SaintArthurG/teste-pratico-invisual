@@ -15,9 +15,6 @@ urlNode = "http://localhost:3000/filmes"
 
 chrome_driver = "./chromedriver"
 
-
-shutil.move('filmes.json', './')
-
 options = Options()
 options.add_argument("--log-level=3")
 #options.add_argument("--headless") #(sem interface gráfica)
