@@ -1,0 +1,8 @@
+# Ignorar chromedriver
+chromedriver.exe
+
+# Ignorar diretórios de ambientes virtuais
+.venv/
+venv/
+env/
+__pycache__/
