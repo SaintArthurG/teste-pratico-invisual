@@ -1,8 +1,11 @@
 # Os 250 melhores filmes de acordo com o IMBD
+Este projeto permite que você consulte os 250 melhores filmes classificados no IMDB, utilizando scraping e análise dos dados.
 
 ## Pré-requisitos
-googledriver = https://developer.chrome.com/docs/chromedriver/downloads?hl=pt-br
-instale a versão compativel com seu navegador chrome
+
+1. **Google Chrome** - Certifique-se de ter o Google Chrome instalado.
+   
+2. **ChromeDriver** - O ChromeDriver é necessário para o Selenium funcionar corretamente. Baixe a versão compatível com o seu navegador através do [link oficial do ChromeDriver](https://developer.chrome.com/docs/chromedriver/downloads?hl=pt-br).
 
 ## Instalação
 
