@@ -6,6 +6,7 @@ Este projeto permite que você consulte os 250 melhores filmes classificados no 
 1. **Google Chrome** - Certifique-se de ter o Google Chrome instalado.
    
 2. **ChromeDriver** - O ChromeDriver é necessário para o Selenium funcionar corretamente. Baixe a versão compatível com o seu navegador através do [link oficial do ChromeDriver](https://developer.chrome.com/docs/chromedriver/downloads?hl=pt-br).
+ 
    2.1 Certifique-se de colocar o caminho onde foi instalado no arquivo "bot.py"
     <img width="307" height="49" alt="image" src="https://github.com/user-attachments/assets/a21587bb-ed87-4e62-b499-0cb7059b3fb4" />
 
