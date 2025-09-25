@@ -24,6 +24,8 @@ app.post('/filmes', (req, res)=>{
         name: 'filmesxl', data: arrayDeFilmes
     }]);
 
+    console.log(buffer);
+
     try{
         fs.writeFileSync('filmes.xlsx', buffer)
         res.status(200).json({
