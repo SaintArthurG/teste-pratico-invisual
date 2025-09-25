@@ -7,8 +7,11 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 import json
 import re
+import requests
 
-chrome_driver = "./chromedriver.exe"
+urlNode = "http://localhost:3000/filmes"
+
+chrome_driver = "./chromedriver"
 
 options = Options()
 options.add_argument("--log-level=3")
@@ -72,15 +75,25 @@ for filme in dados_filmes:
         sinopse_data_text = driver.find_element(By.CSS_SELECTOR, '.sc-bf30a0e-2.bRimta').get_attribute("textContent")
         time.sleep(1)
         filme["sinopse"] = sinopse_data_text
-        print(f"Sinopse para {filme['titulo']}: {filme['sinopse']}")
+        print(f"Sinopse para {filme['titulo']}")
     except Exception as e:
         print(f"Não foi possível capturar a sinopse para {filme['titulo']}, erro: {e}")
         filme["sinopse"] = "Sinopse não disponível"
-        print(f"Sinopse para {filme['titulo']}: {filme['sinopse']}")
     dados_filmes.append(filme)
 
+    with open('filmes.json', 'w', encoding='utf-8') as f:
+        json.dump(dados_filmes, f, ensure_ascii=False, indent=2)
+
+    response = requests.post(urlNode, json=dados_filmes)
+    
+
 print("Escrevendo dados no arquivo JSON...")
-with open('filmes.json', 'w', encoding='utf-8') as f:
-    json.dump(dados_filmes, f, ensure_ascii=False, indent=2)
+#with open('filmes.json', 'w', encoding='utf-8') as f:
+    #json.dump(dados_filmes, f, ensure_ascii=False, indent=2)
 
 driver.quit()
+
+
+filmesData = {"filmes": dados_filmes}
+
+print(response.text)
