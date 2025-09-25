@@ -12,9 +12,7 @@ app.use(json())
 
 app.post('/filmes', (req, res)=>{
     const filmesData  = req.body;
-    console.log(filmesData);
     
-
     let arrayDeFilmes = filmesData.map(filme => [
         filme.titulo,
         filme.ano,
