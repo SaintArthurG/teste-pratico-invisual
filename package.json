@@ -4,7 +4,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "dev": "node server.js",
+    "bot": "python3 bot.py || python bot.py",
+    "start": "concurrently \"npm run dev\" \"npm run bot\""
   },
   "keywords": [],
   "author": "",
@@ -15,6 +17,7 @@
     "node-xlsx": "^0.24.0"
   },
   "devDependencies": {
+    "concurrently": "^9.2.1",
     "shx": "^0.4.0"
   }
 }
