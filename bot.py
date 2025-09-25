@@ -86,9 +86,6 @@ for filme in dados_filmes:
         filme["sinopse"] = "Sinopse não disponível"
     dados_filmes.append(filme)
 
-    with open('filmes.json', 'w', encoding='utf-8') as f:
-        json.dump(dados_filmes, f, ensure_ascii=False, indent=2)
-
     response = requests.post(urlNode, json=dados_filmes)
 
 driver.quit()
