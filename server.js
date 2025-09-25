@@ -12,7 +12,7 @@ app.use(json({ limit: '10mb' }))
 app.post('/filmes', (req, res) => {
     const filmesData = req.body;
 
-    const cabecalho = ['titulo', 'ano', 'duracao', 'nota', 'sinopse'];
+    const cabecalho = ['Nome do filme', 'Ano', 'Duração', 'Nota', 'Sinopse'];
 
     const arrayDeFilmes = filmesData.map(filme => [
         filme.titulo,
