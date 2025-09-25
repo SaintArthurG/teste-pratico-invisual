@@ -4,16 +4,16 @@
 
 1. Clone o repositório
 
-```bash
-git clone https://github.com/SaintArthurG/teste-pratico-invisual.git
-```
-
+   ```bash
+   git clone https://github.com/SaintArthurG/teste-pratico-invisual.git
+   ```
 2. Navegue até o diretório do projeto
 
    ```bash
    cd teste-pratico-invisual
    ```
-3. Crie um ambiente virtual
+3. Crie um ambiente virtual 
+
    (Windows)
 
    ```bash
