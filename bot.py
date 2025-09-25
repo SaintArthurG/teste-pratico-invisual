@@ -5,7 +5,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
-import json
 import re
 import requests
 import shutil
@@ -17,7 +16,6 @@ chrome_driver = "./chromedriver"
 
 options = Options()
 options.add_argument("--log-level=3")
-#options.add_argument("--headless") #(sem interface gráfica)
 
 service = Service(executable_path=chrome_driver)
 
@@ -83,7 +81,7 @@ for filme in dados_filmes:
         filme["sinopse"] = "Sinopse não disponível"
     dados_filmes.append(filme)
 
-    response = requests.post(urlNode, json=dados_filmes)
+    requests.post(urlNode, json=dados_filmes)
 
 driver.quit()
 

@@ -7,7 +7,7 @@ const PORTA = 3000;
 
 const app = express();
 
-app.use(json())
+app.use(json({ limit: '10mb' }))
 
 app.post('/filmes', (req, res) => {
     const filmesData = req.body;
