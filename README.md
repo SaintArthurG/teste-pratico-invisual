@@ -39,7 +39,7 @@
    pip install -r requeriments.txt
    npm install
    ```
-##Rodando o Projeto
+## Rodando o Projeto
 ```bash
    npm start
 ```
