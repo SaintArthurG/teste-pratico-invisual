@@ -1,40 +1,37 @@
+# Os 250 melhores filmes de acordo com o IMBD
 
+## Instalação
 
-`<h1>`Pré-requisitos </h1>
+1. Clone o repositório
 
-`<p>`Crie um ambiente virtual`</p>`
-
-(Windows)
-
-```python
-python -m venv venv
+```bash
+git clone https://github.com/SaintArthurG/teste-pratico-invisual.git
 ```
 
-(Linux)
+2. Navegue até o diretório do projeto
 
-```python
-python3 -m venv venv
-```
+   ```bash
+   cd teste-pratico-invisual
+   ```
+3. Crie um ambiente virtual
+   (Windows)
 
-`<p>` Ative o ambiente virtual`</p>`
+   ```bash
+   python -m venv venv
+   ```
 
-(Windows)
+   (Linux)
 
-```
-./venv/Scripts/activate
-```
+   ```bash
+   python3 -m venv venv
+   ```
 
-(Linux)
+   4. Ative o ambiente virtual
+      (Windows)
 
-```python
-source venv/bin/activate
-```
-
-
-
-
-
-ChromeDriver (
+      ```bash
+      ./venv/Scripts/activate
+      ```
 
 Crie um ambiente virtual
 (Windows)
