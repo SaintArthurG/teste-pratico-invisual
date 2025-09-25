@@ -1,6 +1,6 @@
 # Ignorar chromedriver
-chromedriver.exe
-chromedriver
+#chromedriver.exe
+#chromedriver
 
 # Ignorar diretórios de ambientes virtuais
 .venv/
