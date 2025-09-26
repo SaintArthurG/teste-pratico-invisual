@@ -9,6 +9,7 @@ import re
 import requests
 import shutil
 import os
+import json
 
 urlNode = "http://localhost:3000/filmes"
 
@@ -21,7 +22,7 @@ service = Service(executable_path=chrome_driver)
 
 driver = webdriver.Chrome(service=service, options=options)
 
-driver.get("https://www.google.com.br/")
+#driver.get("https://www.google.com.br/")
 time.sleep(2)
 
 driver.get("https://www.imdb.com/pt/chart/top/")
@@ -34,22 +35,19 @@ except Exception as e:
     print(f"Erro ao encontrar a lista de filmes: {e}")
     driver.quit()
 
-padrao = re.compile(
-    r"(\d+)\.\s+(.*?)\n"
-    r"(\d{4})(\d+h\s*\d+m)\d*\n"
-    r"([\d,]+)\n",
-    re.MULTILINE
-)
+regex = r"\d+\.\s(.+?)\n(\d{4})(\d+h\s\d+m)[^\n]*\n(\d,\d)"
+padrao = re.compile(regex,re.MULTILINE)
 
 dados_filmes = []
 
 for match in padrao.finditer(lista_filmes.text):
-    colocacao = int(match.group(1))
-    titulo = match.group(2).strip()
-    ano = int(match.group(3))
-    duracao = match.group(4).strip()
-    nota = float(match.group(5).replace(',', '.'))
+    titulo = match.group(1)
+    ano = int(match.group(2))
+    duracao = match.group(3).strip()
+    nota = float(match.group(4).replace(',', '.'))
+    
     try:
+        print(f"BUSCANDO ESSE{titulo}")
         link_filme = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.XPATH, f'//a[h3[contains(text(), "{titulo}")]]'))
         ).get_attribute("href")
@@ -58,30 +56,37 @@ for match in padrao.finditer(lista_filmes.text):
         continue
 
     dados_filme = {
-        "colocacao": colocacao,
         "titulo": titulo,
         "ano": ano,
         "duracao": duracao,
         "nota": nota,
         "link": link_filme,
     }
+
     dados_filmes.append(dados_filme)
 
+    with open('links.txt', 'w', encoding='utf-8') as f:
+        for line in dados_filmes:
+            f.write(str(line))
+        
+
+
 for filme in dados_filmes:
-    print(f"Procurando link para: {filme['titulo']}")
+    print(filme["link"])
     driver.get(filme["link"])
-    time.sleep(2)
+    time.sleep(5)
+
     try:
         sinopse_data_text = driver.find_element(By.CSS_SELECTOR, '.sc-bf30a0e-2.bRimta').get_attribute("textContent")
         time.sleep(1)
-        filme["sinopse"] = sinopse_data_text
+        filme["sinopse"] = sinopse_data_text.strip()
         print(f"Sinopse para {filme['titulo']}")
     except Exception as e:
         print(f"Não foi possível capturar a sinopse para {filme['titulo']}, erro: {e}")
         filme["sinopse"] = "Sinopse não disponível"
-    dados_filmes.append(filme)
 
     requests.post(urlNode, json=dados_filmes)
+
 
 driver.quit()
 
@@ -89,7 +94,7 @@ origem = 'filmes.xlsx'
 
 destino = 'arquivos'
 
-os.makedirs(os.path.dirname(destino), exist_ok=True)
+if not os.path.exists(destino):
+    os.makedirs(destino)
 
 shutil.move(origem, destino)
-

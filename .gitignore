@@ -12,3 +12,10 @@ __pycache__/
 .node_modules
 ./node_modules
 node_modules
+
+
+#informações de log
+info.json
+links.json
+links.txt
+teste.py
