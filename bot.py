@@ -4,16 +4,12 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from datetime import datetime
 import time
 import re
 import requests
 import shutil
 import os
-
-
-#FAZER DUAS PLANILHAS, UMA COM OS DADOS EM HORAS E OUTRA COM MINUTOS, DEPOIS MESCLAR AS INFORMAÇÕES.
-#OUTRA DIDEIA TAMBÉM SERIA UTILIZAR DOIS CÓDIGOS DENTRO DO SISTEMA \d+\.\s(.+?)\n(\d{4})(\d+h\s\d+m)[^\n]*\n(\d,\d) -> UM CONTENDO H E OUTRO M, FAZER TESTE E RODAR
-
 
 urlNode = "http://localhost:3000/filmes"
 
@@ -26,7 +22,7 @@ service = Service(executable_path=chrome_driver)
 
 driver = webdriver.Chrome(service=service, options=options)
 
-#driver.get("https://www.google.com.br/")
+driver.get("https://www.google.com.br/")
 time.sleep(2)
 
 driver.get("https://www.imdb.com/pt/chart/top/")
@@ -39,18 +35,8 @@ except Exception as e:
     print(f"Erro ao encontrar a lista de filmes: {e}")
     driver.quit()
 
-
-texto_json = lista_filmes.text.strip()
-
-with open ('textoquebra.txt', 'wb') as f:
-    f.write(lista_filmes.text.strip().encode("UTF-8"))
-
-
-
-regex =r"\d+\.\s+(.*?)\n(\d{4}).*?\n(\d,\d)"                            #"\d+\.\s+(.*?)\\n\d{4}"                                #\d+\.\s(.+?)\n(\d{4})(\d+h\s\d+m)[^\n]*\n(\d,\d)"  #r"\d+\.\s(.+?)\n(\d{4})(\d+h\s\d+m)[^\n]*\n(\d,\d)"
+regex =r"\d+\.\s+(.*?)\n(\d{4}).*?\n(\d,\d)"
 padrao = re.compile(regex,re.MULTILINE)
-
-
 
 dados_filmes = []
 
@@ -88,28 +74,27 @@ for filme in dados_filmes:
             div = driver.find_element(By.CSS_SELECTOR, "div.sc-13687a64-0.iOkLEK")
             ul = div.find_element(By.CSS_SELECTOR, "ul.ipc-inline-list.ipc-inline-list--show-dividers.sc-cb6a22b2-2.aFhKV.baseAlt.baseAlt")
             itens = ul.find_elements(By.CSS_SELECTOR, "li.ipc-inline-list__item")
-            duracao = itens[2].get_attribute("textContent")
+            duracao = itens[-1].get_attribute("textContent")
         except Exception as ex:
             print(f"erro ao pegar duracao {ex}")
-            break
-        
+            filme["duracao"] = "0"
+            continue
+            
         time.sleep(1)
         filme["duracao"] = duracao.strip()
         filme["sinopse"] = sinopse_data_text.strip()
     except Exception as e:
         print(f"Não foi possível capturar a sinopse para {filme['titulo']}, erro: {e}")
         filme["sinopse"] = "Sinopse não disponível"
+        continue
 
     requests.post(urlNode, json=dados_filmes)
-
 
 driver.quit()
 
 origem = 'filmes.xlsx'
 
-time.CLOCK_REALTIME
-
-destino = 'arquivos'
+destino = f"{datetime.now().day}{datetime.now().month}{datetime.now().year}{datetime.now().hour}{datetime.now().minute}{datetime.now().second}"
 
 if not os.path.exists(destino):
     os.makedirs(destino)
