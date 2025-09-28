@@ -9,7 +9,11 @@ import re
 import requests
 import shutil
 import os
-import json
+
+
+#FAZER DUAS PLANILHAS, UMA COM OS DADOS EM HORAS E OUTRA COM MINUTOS, DEPOIS MESCLAR AS INFORMAÇÕES.
+#OUTRA DIDEIA TAMBÉM SERIA UTILIZAR DOIS CÓDIGOS DENTRO DO SISTEMA \d+\.\s(.+?)\n(\d{4})(\d+h\s\d+m)[^\n]*\n(\d,\d) -> UM CONTENDO H E OUTRO M, FAZER TESTE E RODAR
+
 
 urlNode = "http://localhost:3000/filmes"
 
@@ -35,22 +39,31 @@ except Exception as e:
     print(f"Erro ao encontrar a lista de filmes: {e}")
     driver.quit()
 
-regex = r"\d+\.\s(.+?)\n(\d{4})(\d+h\s\d+m)[^\n]*\n(\d,\d)"
+
+texto_json = lista_filmes.text.strip()
+
+with open ('textoquebra.txt', 'wb') as f:
+    f.write(lista_filmes.text.strip().encode("UTF-8"))
+
+
+
+regex =r"\d+\.\s+(.*?)\n(\d{4}).*?\n(\d,\d)"                            #"\d+\.\s+(.*?)\\n\d{4}"                                #\d+\.\s(.+?)\n(\d{4})(\d+h\s\d+m)[^\n]*\n(\d,\d)"  #r"\d+\.\s(.+?)\n(\d{4})(\d+h\s\d+m)[^\n]*\n(\d,\d)"
 padrao = re.compile(regex,re.MULTILINE)
+
+
 
 dados_filmes = []
 
 for match in padrao.finditer(lista_filmes.text):
     titulo = match.group(1)
     ano = int(match.group(2))
-    duracao = match.group(3).strip()
-    nota = float(match.group(4).replace(',', '.'))
-    
+    nota = float(match.group(3).replace(',', '.'))
+
     try:
-        print(f"BUSCANDO ESSE{titulo}")
         link_filme = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.XPATH, f'//a[h3[contains(text(), "{titulo}")]]'))
         ).get_attribute("href")
+
     except Exception as e:
         print(f"Não foi possível encontrar o link para {titulo}, erro: {e}")
         continue
@@ -58,18 +71,11 @@ for match in padrao.finditer(lista_filmes.text):
     dados_filme = {
         "titulo": titulo,
         "ano": ano,
-        "duracao": duracao,
         "nota": nota,
         "link": link_filme,
     }
 
     dados_filmes.append(dados_filme)
-
-    with open('links.txt', 'w', encoding='utf-8') as f:
-        for line in dados_filmes:
-            f.write(str(line))
-        
-
 
 for filme in dados_filmes:
     print(filme["link"])
@@ -78,9 +84,18 @@ for filme in dados_filmes:
 
     try:
         sinopse_data_text = driver.find_element(By.CSS_SELECTOR, '.sc-bf30a0e-2.bRimta').get_attribute("textContent")
+        try:
+            div = driver.find_element(By.CSS_SELECTOR, "div.sc-13687a64-0.iOkLEK")
+            ul = div.find_element(By.CSS_SELECTOR, "ul.ipc-inline-list.ipc-inline-list--show-dividers.sc-cb6a22b2-2.aFhKV.baseAlt.baseAlt")
+            itens = ul.find_elements(By.CSS_SELECTOR, "li.ipc-inline-list__item")
+            duracao = itens[2].get_attribute("textContent")
+        except Exception as ex:
+            print(f"erro ao pegar duracao {ex}")
+            break
+        
         time.sleep(1)
+        filme["duracao"] = duracao.strip()
         filme["sinopse"] = sinopse_data_text.strip()
-        print(f"Sinopse para {filme['titulo']}")
     except Exception as e:
         print(f"Não foi possível capturar a sinopse para {filme['titulo']}, erro: {e}")
         filme["sinopse"] = "Sinopse não disponível"
@@ -91,6 +106,8 @@ for filme in dados_filmes:
 driver.quit()
 
 origem = 'filmes.xlsx'
+
+time.CLOCK_REALTIME
 
 destino = 'arquivos'
 
